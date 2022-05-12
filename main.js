@@ -2,7 +2,7 @@
 
 const { MongoClient } = require('mongodb');
 
-const client = new MongoClient('mongodb://localhost:27017');
+const client = new MongoClient('mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.3.1');
 
 async function run() {
   try {
@@ -34,11 +34,11 @@ async function run() {
     console.log("5. Continue until everything is complete.");
     console.log("6. (Bonus) Anything else you wish you could do just with MongoDB, try to do that!.");
 
-    // console.log("Finding record by id...");
-    // console.log(await findRecordById(database, rat.insertedId));
+    console.log("Finding record by id...");
+    console.log(await findRecordById(database, rat.insertedId));
 
-    // console.log("Finding record by number...");
-    // console.log(await findRecordByNumber(database, '07800000001'));
+    console.log("Finding record by number...");
+    console.log(await findRecordByNumber(database, '07800000001'));
 
     // console.log("Updating record by id...");
     // console.log(await updateRecordById(database, dog.insertedId, 'Seeking Dog', '07800000003'));
@@ -84,12 +84,18 @@ function addRecord(db, title, number) {
   });
 }
 
-function findRecordById() {
-  throw new Error("Not implemented");
+function findRecordById(database, id) {
+  const adverts = database.collection('adverts');
+  return adverts.findOne({
+    _id: id
+  })
 }
 
-function findRecordByNumber() {
-  throw new Error("Not implemented");
+function findRecordByNumber(database, number) {
+  const adverts = database.collection('adverts');
+  return adverts.findOne({
+    number: number
+  })
 }
 
 function updateRecordById() {
